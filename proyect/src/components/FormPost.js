@@ -7,27 +7,16 @@ class FormPost extends Component {
         super(props)
         this.state = {
             coment:'',
-            img:'', 
-            owner: auth.currentUser.email
+            // img:'',
         }
     }
 
-    onSubmit({
-        descripcion
-      }){
-        db.collection('posts').add({
-            owner: this.state.owner,
-            descripcion: this.state,coment,
-            img: this.state.img,
-            createdAt: Date.now(),
-        })
-        .catch((e) => console.log(e))
-    }
+    
 
     render() {
         return (
         <View>
-            <Text>Add post</Text>
+            <Text>New post</Text>
             <View>
             <TextInput
                     style = {styles.input}
@@ -44,7 +33,8 @@ class FormPost extends Component {
                     onChangeText = { (text) => this.setState({coment: text}) }
                 />
                 <TouchableOpacity 
-                onPress={(obj)=> this.onSubmit(obj)}                
+                onPress={(obj)=> this.props.onSubmit({
+                    description: this.state.coment})}                
                 style={styles.btn}>
                     <Text style={styles.textBtn}>Add post</Text>
                 </TouchableOpacity>

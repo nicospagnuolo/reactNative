@@ -1,24 +1,38 @@
 import { View, StyleSheet, ActivityIndicator, FlatList, Text} from 'react-native'
 import React, { Component } from 'react'
-import Contador from '../components/Contador'
+import {db} from '../firebase/config'
+import Post from '../components/Post'
 
 
 class Home extends Component {
     constructor(props){
         super(props)
         this.state={
-            data:[],
+            posts:[],
             hayDatos: false
         }
     }
     componentDidMount(){
-        fetch('https://rickandmortyapi.com/api/character')
-        .then(res => res.json())
-        .then( data => this.setState({
-          data: data,
-          hayDatos: true
-        }, console.log(data)))
-        .catch(err => console.log(err))
+        db.collection('posts').onSnapshot(docs =>{
+            let arrPosts = []
+            docs.forEach(doc =>{
+                arrPosts.push({
+                    id: doc.id,
+                    data: doc.data()
+                })
+            })
+            arrPosts.length > 0 ?
+            this.setState({
+                hayDatos: true
+            })
+            :
+            this.setState({
+                hayDatos: false
+            })
+            this.setState({
+                posts: arrPosts
+            })
+        })
     }
 
     render() {
@@ -29,9 +43,11 @@ class Home extends Component {
                     color={'blue'}
                 />
                 :
-                <View style={styles.containerGral}>
-                   <Text>Home</Text>
-                </View>
+                <FlatList
+                    data={this.state.posts}
+                    keyExtractor={(item)=> item.id.toString()}
+                    renderItem={({item})=> <Post data={item.data} />}
+                />
                 
         )
     }
