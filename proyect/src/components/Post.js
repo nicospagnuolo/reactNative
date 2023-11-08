@@ -1,8 +1,9 @@
-import { Text, View, TouchableOpacity} from 'react-native'
+import { Text, View, TouchableOpacity, Image, StyleSheet} from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'; 
 import React, { Component } from 'react'
 import { db, auth } from '../firebase/config'
 import firebase from 'firebase';
+import Coments from './Coments';
 
 export default class Post extends Component {
     constructor(props){
@@ -11,6 +12,13 @@ export default class Post extends Component {
             likes: 0,
             myLike: false
         }
+    }
+
+    componentDidMount(){
+        console.log(this.props)
+        this.setState({
+            likes: this.props.data.data.likes.length
+        })
     }
     
     like(){
@@ -22,7 +30,24 @@ export default class Post extends Component {
         })
         .then((resp) =>{
             this.setState({
-                estaMiLike:true
+                myLike:true,
+                likes: this.state.likes + 1
+            })
+        })
+        .catch((err) => console.log(err))
+    }
+
+    unLike(){
+        db
+        .collection('posts')
+        .doc(this.props.data.id)
+        .update({
+            likes: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.email)
+        })
+        .then((resp) =>{
+            this.setState({
+                myLike:false,
+                likes: this.state.likes - 1
             })
         })
         .catch((err) => console.log(err))
@@ -31,8 +56,14 @@ export default class Post extends Component {
   render() {
     return (
       <View>
-        <Text>Soy el posteo de: {this.props.data.owner}</Text>
-        <Text>description: {this.props.data.description}</Text>
+        <Image
+            source={{uri: this.props.data.data.img ? this.props.data.data.img : ''}}
+            style = {styles.img}
+            resizeMode = 'contain'
+
+        />
+        <Text>Soy el posteo de: {this.props.data.data.owner}</Text>
+        <Text>description: {this.props.data.data.description}</Text>
         {
             this.state.myLike === false ?
             <TouchableOpacity onPress={() => this.like()} >
@@ -42,14 +73,23 @@ export default class Post extends Component {
                     size={24}/>
             </TouchableOpacity>
             :
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.unLike()}>
                 <FontAwesome
                 name='heart'
                 color='red' 
                 size={24}/>
             </TouchableOpacity>
         }
+        <Text>{this.state.likes}  likes</Text>
+        <Coments/>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+    img: {
+        width: '100%',
+        height: 200
+    }
+})

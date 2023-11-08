@@ -13,7 +13,7 @@ class Home extends Component {
         }
     }
     componentDidMount(){
-        db.collection('posts').onSnapshot(docs =>{
+        db.collection('posts').orderBy('createdAt', 'desc').onSnapshot(docs =>{
             let arrPosts = []
             docs.forEach(doc =>{
                 arrPosts.push({
@@ -22,13 +22,13 @@ class Home extends Component {
                 })
             })
             arrPosts.length > 0 ?
-            this.setState({
-                hayDatos: true
-            })
-            :
-            this.setState({
-                hayDatos: false
-            })
+                this.setState({
+                    hayDatos: true
+                })
+                :
+                this.setState({
+                    hayDatos: false
+                })
             this.setState({
                 posts: arrPosts
             })
@@ -43,11 +43,13 @@ class Home extends Component {
                     color={'blue'}
                 />
                 :
+                <>
                 <FlatList
                     data={this.state.posts}
                     keyExtractor={(item)=> item.id.toString()}
-                    renderItem={({item})=> <Post data={item.data} />}
+                    renderItem={({item})=> <Post data={item} />}
                 />
+                </>
                 
         )
     }

@@ -40,11 +40,17 @@ class FormLogin extends Component {
                     secureTextEntry={true}
                     onChangeText = { (text) => this.setState({password: text}) }
                 />
-                <TouchableOpacity 
-                onPress={()=> this.loginUser(this.state.email, this.state.password)}                
-                style={styles.btn}>
-                    <Text style={styles.textBtn}>Login</Text>
-                </TouchableOpacity>
+                {
+                    this.state.email !== '' && this.state.password !== '' ?
+                        <TouchableOpacity 
+                    onPress={()=> this.loginUser(this.state.email, this.state.password)}                
+                    style={styles.btn}>
+                        <Text style={styles.textBtn}>Login</Text>
+                    </TouchableOpacity>
+                    :
+                    <Text style={styles.text}>Fill both sections</Text>
+                }
+                
 
             </View>
 
@@ -65,6 +71,9 @@ const styles = StyleSheet.create({
     },
     textBtn:{
         color:'white'
+    },
+    text: {
+        color: 'red'
     }
 })
 

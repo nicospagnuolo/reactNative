@@ -17,6 +17,7 @@ class FormRegister extends Component {
         .then(user => db.collection('users').add({
             owner: this.state.email,
             createdAt: Date.now(),
+            imgProfile: this.props.img,
             name: this.state.name,
 
         }))
@@ -53,11 +54,22 @@ class FormRegister extends Component {
                     secureTextEntry={true}
                     onChangeText = { (text) => this.setState({password: text}) }
                 />
-                <TouchableOpacity 
-                onPress={()=> this.registrarUsuario(this.state.name, this.state.email, this.state.password)}                
-                style={styles.btn}>
-                    <Text style={styles.textBtn}>Register</Text>
-                </TouchableOpacity>
+                {
+                    this.state.name !== '' && this.state.email !== '' && this.state.password !== '' ?
+                    <>
+                        <TouchableOpacity 
+                            onPress={()=> this.registrarUsuario(this.state.name, this.state.email, this.state.password)}                
+                            style={styles.btn}>
+                        <Text style={styles.textBtn}>Register</Text>
+                         </TouchableOpacity>
+                    </>
+                    :
+                    <Text style= {styles.text}>Field all the sections</Text>
+
+
+                }
+                
+                
 
             </View>
 
@@ -80,6 +92,9 @@ const styles = StyleSheet.create({
     },
     textBtn:{
         color:'white'
+    },
+    text: {
+        color: 'red'
     }
 })
 
