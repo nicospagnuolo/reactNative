@@ -3,7 +3,6 @@ import { FontAwesome } from '@expo/vector-icons';
 import React, { Component } from 'react'
 import { db, auth } from '../firebase/config'
 import firebase from 'firebase';
-import Coments from './Coments';
 
 export default class Post extends Component {
     constructor(props){
@@ -53,6 +52,10 @@ export default class Post extends Component {
         .catch((err) => console.log(err))
     }
 
+    irComentar(){
+        this.props.navigation.navigate('coments', {post: this.props.id})
+    }
+
   render() {
     return (
       <View>
@@ -81,7 +84,9 @@ export default class Post extends Component {
             </TouchableOpacity>
         }
         <Text>{this.state.likes}  likes</Text>
-        <Coments/>
+        <TouchableOpacity onPress={()=> this.irComentar()}>
+            <Text>View coments</Text>
+        </TouchableOpacity>
       </View>
     )
   }

@@ -23,7 +23,8 @@ export default class NewPost extends Component {
         description: description,
         img: photoUrl,
         createdAt: Date.now(),
-        likes: []
+        likes: [],
+        coments: []
     })
     .then(()=> this.props.navigation.navigate('Home'))
     .catch((e) => console.log(e))

@@ -21,14 +21,14 @@ class FormRegister extends Component {
             name: this.state.name,
 
         }))
-        .then((resp)=> console.log(resp))
+        .then((resp)=> this.props.actualizarPaso(resp.id))
         .catch( err => console.log(err))
     }
 
     render() {
         return (
         <View>
-            <Text>Registrate a mi app</Text>
+            <Text>Register on About Code</Text>
             <View>
                 <TextInput
                     style = {styles.input}
