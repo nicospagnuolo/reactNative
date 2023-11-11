@@ -22,14 +22,14 @@ export default class FormComents extends Component {
             coment: coment
         })
     })
-    .then(()=> this.props.navigation.navigate('Home'))
+    .then()
     .catch((e) => console.log(e))
 }
 
   render() {
     return (
       <View>
-        <Text>Coments</Text>
+        <Text>Add your coment</Text>
          <TextInput
                     style = {styles.input}
                     placeholder = 'coment'
@@ -37,15 +37,21 @@ export default class FormComents extends Component {
                     value = {this.state.name}
                     onChangeText = { (text) => this.setState({coment: text}) }
                 />
-                <TouchableOpacity 
+                {
+                  this.state.coment !== '' ?
+                  <TouchableOpacity 
                   style={styles.btn}
                   onPress={(obj)=> this.addComent(this.state.coment)}
                     >
                   <Text 
                   style={styles.textBtn}>
-                    Add coment
+                    Add comment
                   </Text>
                 </TouchableOpacity>
+                :
+                <Text style={styles.text}>You have to write more than 0 character.</Text>
+                }
+                
       </View>
     )
   }
@@ -58,10 +64,14 @@ const styles = StyleSheet.create({
       marginBottom: 24
   },
   btn:{
-      backgroundColor:'purple',
-      padding:16
+    backgroundColor: '#87ceeb',
+    color: '#fff',
+    padding: 10,
+    border: 'none',
+    borderRadius: 4,
+    width: 150
   },
-  textBtn:{
-      color:'white'
-  }
+  text:{
+    color:'red'
+}
 })

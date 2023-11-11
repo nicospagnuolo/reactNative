@@ -51,8 +51,8 @@ updateImgUrl(url){
           :
           <>
             <FormPost 
-          updateDescription = {(description)=> this.updateDescription(description)}
-          stateDescription = {this.state.description}
+            updateDescription = {(description)=> this.updateDescription(description)}
+            stateDescription = {this.state.description}
           />
 
           {this.state.description !== '' ?
@@ -71,24 +71,25 @@ updateImgUrl(url){
           :
           <Text style= {styles.text}>Fill all the sections </Text>
         }
-
-
           </>
         }
-        
       </View>
     )
   }
 }
 const styles = StyleSheet.create({
   btn:{
-      backgroundColor:'purple',
-      padding:16
-  }, 
-  container: {
-    flex: 1
-  },
-  text: {
-    color: 'red'
+    backgroundColor: '#4caf50',
+    color: '#fff',
+    padding: 10,
+    border: 'none',
+    borderRadius: 4
+}, 
+container: {
+  flex: 1,
+  justifyContent:'center'
+},
+text: {
+  color: 'red'
 }
 })

@@ -61,13 +61,9 @@ export default class Register extends Component {
         {
           this.state.step1 ?
           <>
+            <Text>Register on About Code</Text>
             <FormRegister  actualizarPaso= {(id)=> this.actualizarPaso(id)} navigation={this.props.navigation} img = {this.state.urlImg} />
-          <Text>
-            Already have an account?
-            <TouchableOpacity onPress={()=> this.props.navigation.navigate('login')}>
-              Login here!
-            </TouchableOpacity>
-          </Text>
+          
         </>
           
           :

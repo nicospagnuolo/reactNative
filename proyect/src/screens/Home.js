@@ -23,7 +23,7 @@ class Home extends Component {
             })
             arrPosts.length > 0 ?
                 this.setState({
-                    hayDatos: true
+                    hayDatos: true,
                 })
                 :
                 this.setState({
@@ -37,7 +37,7 @@ class Home extends Component {
 
     render() {
     return (
-            this.state.hayDatos === false ?
+            this.state.hayDatos === false  ?
             <ActivityIndicator
                     size={32}
                     color={'blue'}

@@ -1,7 +1,9 @@
-import { Text, View, ActivityIndicator, FlatList, Image, TouchableOpacity,StyleSheet} from 'react-native'
+import { Text, View, ActivityIndicator, FlatList, Image, TouchableOpacity,StyleSheet, ScrollView} from 'react-native'
 import React, { Component } from 'react'
 import {db, auth } from '../firebase/config'
 import Post from '../components/Post'
+import { SimpleLineIcons } from '@expo/vector-icons'; 
+import { EvilIcons } from '@expo/vector-icons'; 
 
 export default class Profile extends Component {
   constructor(props){
@@ -35,15 +37,11 @@ export default class Profile extends Component {
                   data: doc.data()
               })
           })
-          arrPosts.length > 0 ?
               this.setState({
                   hayDatos: true,
                   posts: arrPosts
               },()=> console.log(this.state.posts))
-              :
-              this.setState({
-                  hayDatos: false,
-              })
+              
       })
       
   }
@@ -51,6 +49,12 @@ export default class Profile extends Component {
     logout(){
         auth.signOut()
         this.props.navigation.navigate('login')
+    }
+
+    deletePost(postId){
+        db.collection('posts')
+        .doc(postId)
+        .delete()
     }
 
   render() {
@@ -62,7 +66,7 @@ export default class Profile extends Component {
                 />
                 :
                 <>
-                <View>
+                <ScrollView>
                 <Image
                   source={{uri: this.state.usuario.imgProfile}}
                   style = {styles.img}
@@ -71,16 +75,28 @@ export default class Profile extends Component {
                 <Text>Welcome to your profile: {this.state.usuario.name}</Text>
                 <Text>Your email: {this.state.usuario.owner}</Text>
                 <TouchableOpacity style={styles.signoutBtn} onPress={()=> this.logout()}>
-                  <Text>Sign out</Text>
+                  <Text><SimpleLineIcons name="logout" size={24} color="black" /> Log out</Text>
                 </TouchableOpacity>
                 <Text>Your posts</Text>
+                {
+                  this.state.posts.length === 0 ?
+                  <Text style={styles.text}>You don't have posts yet.</Text>
+                  :
+                  <></>
+                }
                 <FlatList
-                    data={this.state.posts}
-                    keyExtractor={(item)=> item.id.toString()}
-                    renderItem={({item})=> <Post data={item} />}
-                />
-                
-                </View>
+                        data={this.state.posts}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) =>
+                            <View>
+                                <Post navigation={this.props.navigation} data={item} id={item.id} />
+                                <TouchableOpacity onPress={() => this.deletePost(item.id)} style= {styles.btn}>
+                                    <Text><EvilIcons name="trash" size={24} color="black" />Delete post</Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
+                    />              
+                </ScrollView>
                 </>
       
     )
@@ -89,12 +105,27 @@ export default class Profile extends Component {
 
 const styles = StyleSheet.create({
     signoutBtn:{
-      backgroundColor:'red',
-      padding: 16
+      backgroundColor: '#4caf50',
+        color: '#fff',
+        padding: 10,
+        border: 'none',
+        borderRadius: 4,
+        width: 100
     },
     img: {
       width: 100,
       height: 100,
       borderRadius: '50%'
-  }
+  },
+  btn:{
+    backgroundColor: '#87ceeb',
+    color: '#fff',
+    padding: 10,
+    border: 'none',
+    borderRadius: 4,
+    width: 150
+  },
+  text: {
+      color: 'red'
+  }   
   })

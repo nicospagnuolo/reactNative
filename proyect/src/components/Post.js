@@ -52,21 +52,23 @@ export default class Post extends Component {
         .catch((err) => console.log(err))
     }
 
+    
+
     irComentar(){
         this.props.navigation.navigate('coments', {post: this.props.id})
     }
 
   render() {
     return (
-      <View>
+      <View style = {styles.card}>
+        <Text >Soy el posteo de: {this.props.data.data.owner}</Text>
         <Image
             source={{uri: this.props.data.data.img ? this.props.data.data.img : ''}}
             style = {styles.img}
             resizeMode = 'contain'
 
         />
-        <Text>Soy el posteo de: {this.props.data.data.owner}</Text>
-        <Text>description: {this.props.data.data.description}</Text>
+        <Text >{this.props.data.data.owner}: {this.props.data.data.description}</Text>
         {
             this.state.myLike === false ?
             <TouchableOpacity onPress={() => this.like()} >
@@ -83,9 +85,9 @@ export default class Post extends Component {
                 size={24}/>
             </TouchableOpacity>
         }
-        <Text>{this.state.likes}  likes</Text>
-        <TouchableOpacity onPress={()=> this.irComentar()}>
-            <Text>View coments</Text>
+        <Text >{this.state.likes}  likes</Text>
+        <TouchableOpacity style={styles.btn} onPress={()=> this.irComentar()}>
+            <Text >View coments</Text>
         </TouchableOpacity>
       </View>
     )
@@ -96,5 +98,24 @@ const styles = StyleSheet.create({
     img: {
         width: '100%',
         height: 200
+    },
+    card: {
+        alignSelf: "baseline",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#fff",
+        height: 400,
+        margin: 10,
+        padding: 20,
+        borderRadius: 30,
+        width: 500,
+        textAlign: "center",
+    },
+    btn: {
+        backgroundColor: '#4caf50',
+        color: '#fff',
+        padding: 10,
+        border: 'none',
+        borderRadius: 4
     }
 })

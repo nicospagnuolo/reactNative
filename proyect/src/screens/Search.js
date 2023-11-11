@@ -63,8 +63,12 @@ const styles = StyleSheet.create({
       marginBottom: 24
   },
   btn:{
-      backgroundColor:'purple',
-      padding:16
+    backgroundColor: '#4caf50',
+    color: '#fff',
+    padding: 10,
+    border: 'none',
+    borderRadius: 4,
+    width: 150
   },
   textBtn:{
       color:'white'
