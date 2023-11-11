@@ -37,19 +37,24 @@ class Home extends Component {
 
     render() {
     return (
-            this.state.hayDatos === false  ?
-            <ActivityIndicator
-                    size={32}
-                    color={'blue'}
-                />
-                :
-                <>
-                <FlatList
-                    data={this.state.posts}
-                    keyExtractor={(item)=> item.id.toString()}
-                    renderItem={({item})=> <Post navigation = {this.props.navigation} data={item} id={item.id} />}
-                />
-                </>
+        <View style={styles.containerGral}>
+            {
+                this.state.hayDatos === false  ?
+                <ActivityIndicator
+                        size={32}
+                        color={'blue'}
+                    />
+                    :
+                    <>
+                    <FlatList
+                        data={this.state.posts}
+                        keyExtractor={(item)=> item.id.toString()}
+                        renderItem={({item})=> <Post navigation = {this.props.navigation} data={item} id={item.id} />}
+                    />
+                    </>
+            }
+            
+        </View>
                 
         )
     }
@@ -58,7 +63,9 @@ class Home extends Component {
 const styles = StyleSheet.create(
     {
         containerGral:{
-            flex:1
+            flex:1,
+            justifyContent: 'center',
+            alignItems: 'center'
         },
         container : {
             flex : 2,

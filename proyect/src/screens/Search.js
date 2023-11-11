@@ -47,12 +47,19 @@ export default class Search extends Component {
           </>
           :
           <>
+              {
+                this.state.searchData.length === 0 ?
+                  <Text style={styles.textBtn}>There is not any user with the name: {this.state.valorInput}</Text>
+                  :
+                   <></>
+              }
                 <FlatList
                     data={this.state.searchData}
                     keyExtractor={(item)=> item.id.toString()}
                     renderItem={({item})=> <User data={item} id={item.id} />}
                 />
-                </>
+                
+          </>
     )
   }
 }
@@ -71,6 +78,6 @@ const styles = StyleSheet.create({
     width: 150
   },
   textBtn:{
-      color:'white'
+      color:'red'
   }
 })

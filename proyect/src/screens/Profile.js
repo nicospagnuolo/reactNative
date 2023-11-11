@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import {db, auth } from '../firebase/config'
 import Post from '../components/Post'
 import { SimpleLineIcons } from '@expo/vector-icons'; 
-import { EvilIcons } from '@expo/vector-icons'; 
+
 
 export default class Profile extends Component {
   constructor(props){
@@ -51,11 +51,7 @@ export default class Profile extends Component {
         this.props.navigation.navigate('login')
     }
 
-    deletePost(postId){
-        db.collection('posts')
-        .doc(postId)
-        .delete()
-    }
+
 
   render() {
     return (
@@ -66,9 +62,10 @@ export default class Profile extends Component {
                 />
                 :
                 <>
-                <ScrollView>
+                
+                <ScrollView >
                 <Image
-                  source={{uri: this.state.usuario.imgProfile}}
+                  source={{uri: this.state.usuario.imgProfile ? this.state.usuario.imgProfile : 'https://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg'}}
                   style = {styles.img}
                   resizeMode = 'contain'
                 />
@@ -84,19 +81,20 @@ export default class Profile extends Component {
                   :
                   <></>
                 }
+                <View style={styles.container}>
                 <FlatList
                         data={this.state.posts}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) =>
                             <View>
-                                <Post navigation={this.props.navigation} data={item} id={item.id} />
-                                <TouchableOpacity onPress={() => this.deletePost(item.id)} style= {styles.btn}>
-                                    <Text><EvilIcons name="trash" size={24} color="black" />Delete post</Text>
-                                </TouchableOpacity>
+                                <Post navigation={this.props.navigation} data={item} id={item.id} profile = {true}/>
+                                
                             </View>
                         }
-                    />              
+                />
+                </View>
                 </ScrollView>
+                
                 </>
       
     )
@@ -127,5 +125,11 @@ const styles = StyleSheet.create({
   },
   text: {
       color: 'red'
-  }   
+  },
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 'wrap',
+    flexDirection: 'wrap'
+  }
   })

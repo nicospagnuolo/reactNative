@@ -3,21 +3,47 @@ import { FontAwesome } from '@expo/vector-icons';
 import React, { Component } from 'react'
 import { db, auth } from '../firebase/config'
 import firebase from 'firebase';
+import { EvilIcons } from '@expo/vector-icons'; 
 
 export default class Post extends Component {
     constructor(props){
         super(props)
         this.state={
             likes: 0,
-            myLike: false
+            myLike: false,
+            profile: false,
+            usuario: ''
         }
     }
 
     componentDidMount(){
-        console.log(this.props)
+        db.collection('users').where("owner", "==", this.props.data.data.owner).onSnapshot((docs)=>{
+            let arrUsuario = []
+            docs.forEach((doc) => {
+              arrUsuario.push({
+                id:doc.id,
+                data: doc.data()
+              })
+            })
+      
+            this.setState({
+              usuario : arrUsuario[0].data 
+            }, () => console.log(this.state.usuario))
+      
+        })
+
         this.setState({
             likes: this.props.data.data.likes.length
         })
+
+        this.props.profile ?
+        <></>
+        :
+        this.setState({
+            profile: this.props.profile
+        })
+        
+
     }
     
     like(){
@@ -52,6 +78,11 @@ export default class Post extends Component {
         .catch((err) => console.log(err))
     }
 
+    deletePost(postId){
+        db.collection('posts')
+        .doc(postId)
+        .delete()
+    }
     
 
     irComentar(){
@@ -61,14 +92,18 @@ export default class Post extends Component {
   render() {
     return (
       <View style = {styles.card}>
-        <Text >Soy el posteo de: {this.props.data.data.owner}</Text>
+        <Text><Image
+            source={{uri: this.state.usuario.imgProfile ? this.state.usuario.imgProfile : 'https://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg'}}
+            style = {styles.imgP}
+            resizeMode = 'contain'
+            />  {this.state.usuario.owner}</Text>
         <Image
             source={{uri: this.props.data.data.img ? this.props.data.data.img : ''}}
             style = {styles.img}
             resizeMode = 'contain'
 
         />
-        <Text >{this.props.data.data.owner}: {this.props.data.data.description}</Text>
+        <Text >{this.state.usuario.name}: {this.props.data.data.description}</Text>
         {
             this.state.myLike === false ?
             <TouchableOpacity onPress={() => this.like()} >
@@ -89,6 +124,17 @@ export default class Post extends Component {
         <TouchableOpacity style={styles.btn} onPress={()=> this.irComentar()}>
             <Text >View coments</Text>
         </TouchableOpacity>
+        {
+            this.state.profile ?
+            <>
+            <div>----------------</div>
+            <TouchableOpacity onPress={() => this.deletePost(this.props.id)} style= {styles.btn}>
+                <Text><EvilIcons name="trash" size={24} color="black" />Delete post</Text>
+            </TouchableOpacity>
+            </>
+            :
+            <></>
+        }
       </View>
     )
   }
@@ -104,7 +150,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         alignItems: "center",
         backgroundColor: "#fff",
-        height: 400,
         margin: 10,
         padding: 20,
         borderRadius: 30,
@@ -117,5 +162,10 @@ const styles = StyleSheet.create({
         padding: 10,
         border: 'none',
         borderRadius: 4
-    }
+    },
+    imgP: {
+        width: 40,
+        height: 40,
+        borderRadius: 20
+      }
 })

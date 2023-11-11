@@ -28,7 +28,7 @@ export default class FormComents extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.container}>
         <Text>Add your coment</Text>
          <TextInput
                     style = {styles.input}
@@ -73,5 +73,11 @@ const styles = StyleSheet.create({
   },
   text:{
     color:'red'
+  },
+  container: {
+    width: 350,
+    margin: 50, 
+    padding: 20,
+    backgroundColor: '#fff',
 }
 })

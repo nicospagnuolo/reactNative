@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {View, FlatList, Text, StyleSheet } from 'react-native'
+import {View, FlatList, Text, StyleSheet, Image } from 'react-native'
 import FormComents from '../components/FormComents'
 import { db } from '../firebase/config'
 import Coment from '../components/Coment'
@@ -27,7 +27,7 @@ export default class Register extends Component {
               this.setState({
                   hayDatos: false,
               })
-        })
+    })
 }
 
   
