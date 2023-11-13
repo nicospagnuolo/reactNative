@@ -76,9 +76,20 @@ export default class PostCamera extends Component {
                     style = {styles.img}
                     resizeMode = {'contain'}
                 />
-                <TouchableOpacity onPress={()=> this.acceptPhoto()}>
+                {
+                    this.props.saveImg ?
+                    <TouchableOpacity 
+                onPress={()=> this.props.saveImg(this.state.urlTemp)}>
                     <Entypo name="arrow-bold-right" size={24} color="black" />
                 </TouchableOpacity>
+                    :
+                    <TouchableOpacity 
+                onPress={()=> this.acceptPhoto()} >
+                    <Entypo name="arrow-bold-right" size={24} color="black" />
+                </TouchableOpacity>
+                }
+                
+                
                 <TouchableOpacity onPress={()=> this.deletePhoto()}>
                     <AntDesign name="delete" size={24} color="black" />
                 </TouchableOpacity>

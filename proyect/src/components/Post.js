@@ -17,6 +17,12 @@ export default class Post extends Component {
     }
 
     componentDidMount(){
+
+        let estaMiLike = this.props.data.data.likes.includes(auth.currentUser.email)
+        if(estaMiLike){
+            this.setState({myLike: true})
+        }
+
         db.collection('users').where("owner", "==", this.props.data.data.owner).onSnapshot((docs)=>{
             let arrUsuario = []
             docs.forEach((doc) => {
@@ -34,7 +40,9 @@ export default class Post extends Component {
 
         this.setState({
             likes: this.props.data.data.likes.length
-        })        
+        })   
+        
+        
 
     }
     
