@@ -34,15 +34,7 @@ export default class Post extends Component {
 
         this.setState({
             likes: this.props.data.data.likes.length
-        })
-
-        this.props.profile ?
-        <></>
-        :
-        this.setState({
-            profile: this.props.profile
-        })
-        
+        })        
 
     }
     
@@ -125,7 +117,7 @@ export default class Post extends Component {
             <Text >View coments</Text>
         </TouchableOpacity>
         {
-            this.state.profile ?
+            this.props.profile ?
             <>
             <div>----------------</div>
             <TouchableOpacity onPress={() => this.deletePost(this.props.id)} style= {styles.btn}>
