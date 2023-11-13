@@ -43,7 +43,6 @@ updateImgUrl(url){
   render() {
     return (
       <View style = {styles.container}>
-        <Text>New post</Text>
         {
           this.state.step1 ?
           <PostCamera updateImgUrl= {(url)=> this.updateImgUrl(url)} />
@@ -57,7 +56,7 @@ updateImgUrl(url){
 
           {this.state.description !== '' ?
           <TouchableOpacity 
-            style={styles.btn}
+            style={styles.btn2}
             onPress={(obj)=> this.onSubmit({
               description: this.state.description,
               photoUrl: this.state.urlImg
@@ -78,8 +77,8 @@ updateImgUrl(url){
   }
 }
 const styles = StyleSheet.create({
-  btn:{
-    backgroundColor: '#4caf50',
+  btn2:{
+    backgroundColor: '#87ceeb',
     color: '#fff',
     padding: 10,
     border: 'none',

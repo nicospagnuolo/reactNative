@@ -31,6 +31,7 @@ class FormRegister extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <Text style={styles.title}>Register on About Code</Text>
                 <TextInput
                     style = {styles.input}
                     placeholder = 'Name'
@@ -100,6 +101,10 @@ const styles = StyleSheet.create({
         margin: 50, 
         padding: 20,
         backgroundColor: '#fff',
+    },
+    title: {
+        fontWeight: 'bold',
+        fontSize: 18
     },
     btn:{
         backgroundColor: '#4caf50',
