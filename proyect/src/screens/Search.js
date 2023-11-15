@@ -2,82 +2,66 @@ import { Text, TextInput, View, TouchableOpacity, StyleSheet, FlatList } from 'r
 import React, { Component } from 'react'
 import {db} from '../firebase/config'
 import User from '../components/User'
+import FormSearch from '../components/FormSearch'
 
 export default class Search extends Component {
   constructor(props){
     super(props)
     this.state = {
       searchData: [],
+      backUp: [],
       valorInput: '',
       search: true
     }
   }
-  filterUsers(input){
-    db.collection('users').where("name", "==", input).onSnapshot((docs)=>{
-      let arrUsuarios = []
-      docs.forEach(doc =>{
-        arrUsuarios.push({
-            id: doc.id,
-            data: doc.data()
+
+  componentDidMount(){
+    db.collection('users').onSnapshot(docs =>{
+        let arrPosts = []
+        docs.forEach(doc =>{
+            arrPosts.push({
+                id: doc.id,
+                data: doc.data()
+            })
+        })
+        this.setState({
+          backUp: arrPosts,
         })
     })
-      this.setState({
-        searchData: arrUsuarios,
-        search: false
-    }, ()=> console.log(this.state.searchData))
+  }
+  filterUsers(input){
+    let users = this.state.backUp.filter((elm) => elm.data.name.toLowerCase().includes(input.toLowerCase())
+    || elm.data.owner.toLowerCase().includes(input.toLowerCase()))
+    this.setState({
+      searchData: users,
+      search: false
     })
   }
 
+  uploadInput(valor){
+    this.setState({
+      valorInput: valor
+    })
+    console.log(this.state.searchData)
+  }
+
+  
   
   render() {
     return (
-          this.state.search ?
           <>
-          <Text>FormSearch</Text>
-          <TextInput
-              style = {styles.input}
-              placeholder = 'Search with username'
-              keyboardType = 'default'
-              value = {this.state.valorInput}
-              onChangeText = { (text) => this.setState({valorInput: text}) }
-          />
-          <TouchableOpacity onPress={() => this.filterUsers(this.state.valorInput)} style={styles.btn}>
-              <Text>Search users</Text>
-          </TouchableOpacity>
-          </>
-          :
-          <>
-              {
-                this.state.searchData.length === 0 ?
-                  <Text style={styles.textBtn}>There is not any user with the name: {this.state.valorInput}</Text>
-                  :
-                   <></>
-              }
-                <FlatList
+          <FormSearch filterMovies={(name) => this.filterUsers(name)} uploadInput={(valor)=> this.uploadInput(valor)}/>
+          {
+            this.state.valorInput == '' ?
+            <Text>Search with username or owner</Text>
+            :
+            <FlatList
                     data={this.state.searchData}
                     keyExtractor={(item)=> item.id.toString()}
                     renderItem={({item})=> <User data={item} id={item.id} />}
                 />
-                
+          }              
           </>
     )
   }
 }
-const styles = StyleSheet.create({
-  input:{
-      borderWidth: 1,
-      borderColor: 'green',
-      marginBottom: 24
-  },
-  btn:{
-    backgroundColor: '#4caf50',
-    color: '#fff',
-    padding: 10,
-    border: 'none',
-    borderRadius: 4,
-    width: 150
-  },
-  textBtn:{
-      color:'red'
-  }
-})

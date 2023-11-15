@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity, Image, StyleSheet} from 'react-native'
+import { Text, View, TouchableOpacity, Image, StyleSheet, FlatList} from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'; 
 import React, { Component } from 'react'
 import { db, auth } from '../firebase/config'
@@ -89,21 +89,27 @@ export default class Post extends Component {
         this.props.navigation.navigate('coments', {post: this.props.id})
     }
 
+    goProfile(){
+        this.props.data.data.owner === auth.currentUser.email ? this.props.navigation.navigate('Profile'): this.props.navigation.navigate('userProfile', {usuario: this.props.data.data.owner})
+    }
+
   render() {
     return (
       <View style = {styles.card}>
-        <Text><Image
+        <TouchableOpacity onPress={()=> this.goProfile()}><Text><Image
             source={{uri: this.state.usuario.imgProfile ? this.state.usuario.imgProfile : 'https://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg'}}
             style = {styles.imgP}
             resizeMode = 'contain'
-            />  {this.state.usuario.owner}</Text>
+            />  {this.state.usuario.owner}</Text></TouchableOpacity>
         <Image
             source={{uri: this.props.data.data.img ? this.props.data.data.img : ''}}
             style = {styles.img}
             resizeMode = 'contain'
 
         />
+        
         <Text >{this.state.usuario.name}: {this.props.data.data.description}</Text>
+        
         {
             this.state.myLike === false ?
             <TouchableOpacity onPress={() => this.like()} >
@@ -124,6 +130,16 @@ export default class Post extends Component {
         <TouchableOpacity style={styles.btn} onPress={()=> this.irComentar()}>
             <Text >View coments</Text>
         </TouchableOpacity>
+        <FlatList
+            data={this.props.data.data.coments.slice(-4).reverse()} // electiva de mostrar 4 comentarios
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View >
+                <Text>{item.owner}:</Text>
+                <Text>{item.coment}</Text>
+              </View>
+            )}
+          />
         {
             this.props.profile ?
             <>

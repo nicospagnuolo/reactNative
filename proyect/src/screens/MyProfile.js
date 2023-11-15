@@ -25,7 +25,8 @@ export default class Profile extends Component {
       })
 
       this.setState({
-        usuario : arrUsuario[0].data 
+        usuario : arrUsuario[0].data,
+        id: arrUsuario[0].id
       }, () => console.log(this.state.usuario))
 
     })
@@ -51,6 +52,14 @@ export default class Profile extends Component {
         this.props.navigation.navigate('login')
     }
 
+    delete(userId){
+      auth.signOut()
+      this.props.navigation.navigate('login')
+      db.collection('users')
+        .doc(userId)
+        .delete()
+    }
+
 
 
   render() {
@@ -73,6 +82,9 @@ export default class Profile extends Component {
                 <Text>Your email: {this.state.usuario.owner}</Text>
                 <TouchableOpacity style={styles.signoutBtn} onPress={()=> this.logout()}>
                   <Text><SimpleLineIcons name="logout" size={24} color="black" /> Log out</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.signoutBtn} onPress={()=> this.delete(this.state.id)}>
+                  <Text><SimpleLineIcons name="logout" size={24} color="black" /> Delete</Text>
                 </TouchableOpacity>
                 <Text>Your posts</Text>
                 {

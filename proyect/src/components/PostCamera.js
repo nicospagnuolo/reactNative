@@ -79,7 +79,10 @@ export default class PostCamera extends Component {
                 {
                     this.props.saveImg ?
                     <TouchableOpacity 
-                onPress={()=> this.props.saveImg(this.state.urlTemp)}>
+                onPress={()=> {this.props.saveImg(this.state.urlTemp)
+                    this.setState = ({
+                        showCamera: true
+                    })}}>
                     <Entypo name="arrow-bold-right" size={24} color="black" />
                 </TouchableOpacity>
                     :

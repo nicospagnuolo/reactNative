@@ -6,6 +6,8 @@ import Register from '../screens/Register';
 import Login from '../screens/Login'
 import TabNavigation from './TabNavigation';
 import Coments from '../screens/Coments';
+import UserProfile from '../screens/UserProfile';
+import AdicionalInfo from '../screens/AdicionalInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,9 +35,17 @@ export default function MainNavigation() {
         <Stack.Screen 
         name = 'coments'
         component={Coments}
+        />
+        <Stack.Screen 
+        name = 'userProfile'
+        component={UserProfile}
+        />
+        <Stack.Screen 
+        name = 'AdicionalInfo'
+        component={AdicionalInfo}
         options={{
-            headerShown:false
-        }}
+          headerShown:false
+      }}
         />
         
       </Stack.Navigator>

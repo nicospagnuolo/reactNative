@@ -11,70 +11,32 @@ class FormRegister extends Component {
             email: '',
             password: '',
             error: '',
-            takePicture: false,
-            urlImg: '',
-            step1: false
+            urlImg: ''
         }
     }
 
-    componentDidUpdate(){
-        if (this.state.urlImg !== '') {
-          this.saveImg()
-        }
-      }
 
     registrarUsuario(name, email, password){
         auth.createUserWithEmailAndPassword(email, password)
-        .then(user => db.collection('users').add({
-            owner: this.state.email,
-            createdAt: Date.now(),
-            imgProfile: this.state.urlImg,
-            name: this.state.name,
-        }))
-        .then((resp)=>this.actualizarPaso(resp.id))
-        .catch( err =>{
-             console.log(err)
-            this.setState({
-                error: resp.message
-            })    
+        .then(user => {
+            db.collection('users').add({
+                owner: this.state.email,
+                createdAt: Date.now(),
+                imgProfile: this.state.urlImg,
+                name: this.state.name,
+            })
+            .then((resp)=>this.props.navigation.navigate('AdicionalInfo'))
+            .catch( err =>{
+                console.log(err)
+                this.setState({
+                    error: resp.message
+                })  
+            })
         })
+        .catch((err=> console.log(err)))
+        
     }
 
-    updateImgUrl(url){
-        this.setState({
-          urlImg: url,
-          step1: false
-        })
-      }
-
-      actualizarPaso(id){
-        this.setState({
-          userId: id
-        })
-      }
-      saveImg(url){
-        db
-        .collection('users')
-        .doc(this.state.userId)
-        .update({
-            imgProfile: url
-        })
-        .then((resp) =>{
-          this.setState({
-            urlImg: '',
-            step1: false
-          }, ()=> this.props.navigation.navigate('tabNavigation'))
-          
-        })
-        .catch((err) => console.log(err))
-    }
-
-      takePicture(){
-        this.registrarUsuario(this.state.name, this.state.email, this.state.password)
-        this.setState({
-            step1: true
-        })
-      }
 
     render() {
         return (
@@ -104,21 +66,16 @@ class FormRegister extends Component {
                     secureTextEntry={true}
                     onChangeText = { (text) => this.setState({password: text}) }
                 />
-                {
-                    this.state.step1 ?
-                    <PostCamera  updateImgUrl= {(url)=> this.actualizarPaso(url)} saveImg = {(url) => this.saveImg(url)} />
-                    :
-                    <></>
-                }
+                
 
 
                 {
                     this.state.name !== '' && this.state.email !== '' && this.state.password !== '' ?
                     <>
                         <TouchableOpacity 
-                            onPress={()=> this.takePicture()}                
+                            onPress={()=> this.registrarUsuario(this.state.name, this.state.email, this.state.password)}                
                             style={styles.btn}>
-                        <Text style={styles.textBtn}>Take picture</Text>
+                        <Text style={styles.textBtn}>Register</Text>
                          </TouchableOpacity>
                     </>
                     :
@@ -126,10 +83,7 @@ class FormRegister extends Component {
                     
                 }
 
-                {/* {
-                this.state.step1 ?
                 
-                } */}
 
                 {
                     this.state.error !== ''?

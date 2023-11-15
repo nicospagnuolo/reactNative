@@ -14,31 +14,7 @@ export default class Register extends Component {
     }
   }
 
-  componentDidUpdate(){
-    if (this.state.urlImg !== '') {
-      this.saveImg()
-    }
-  }
 
-
-
-
-  saveImg(){
-    db
-    .collection('users')
-    .doc(this.state.userId)
-    .update({
-        imgProfile: this.state.urlImg
-    })
-    .then((resp) =>{
-      this.setState({
-        urlImg: '',
-        step1: true
-      }, ()=> this.props.navigation.navigate('tabNavigation'))
-      
-    })
-    .catch((err) => console.log(err))
-}
 
   
 

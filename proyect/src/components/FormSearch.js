@@ -1,4 +1,4 @@
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View, TouchableOpacity, TextInput, StyleSheet } from 'react-native'
 import React, { Component } from 'react'
 
 export default class FormSearch extends Component {
@@ -8,6 +8,14 @@ export default class FormSearch extends Component {
             valorInput: ''
         }
     }
+
+    guardarValor(evento){
+       this.props.filterMovies(evento)
+       this.props.uploadInput(evento)
+      
+    }
+
+    
   render() {
     return (
       <View>
@@ -16,13 +24,31 @@ export default class FormSearch extends Component {
             style = {styles.input}
             placeholder = 'Search with username'
             keyboardType = 'default'
-            value = {this.state.valorInput}
-            onChangeText = { (text) => this.setState({valorInput: text}) }
+            onChangeText = {(evento)=> this.guardarValor(evento)}
         />
-        <TouchableOpacity>
+        <TouchableOpacity style={styles.btn}>
             <Text>Search users</Text>
         </TouchableOpacity>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  input:{
+      borderWidth: 1,
+      borderColor: 'green',
+      marginBottom: 24
+  },
+  btn:{
+    backgroundColor: '#4caf50',
+    color: '#fff',
+    padding: 10,
+    border: 'none',
+    borderRadius: 4,
+    width: 150
+  },
+  textBtn:{
+      color:'red'
+  }
+})

@@ -34,7 +34,7 @@ export default class FormComents extends Component {
                     style = {styles.input}
                     placeholder = 'coment'
                     keyboardType = 'default'
-                    value = {this.state.name}
+                    value = {this.state.coment}
                     onChangeText = { (text) => this.setState({coment: text}) }
                 />
                 {

@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Home from '../screens/Home'
 import Search from '../screens/Search';
 import NewPost from '../screens/NewPost';
-import Profile from '../screens/Profile';
+import Profile from '../screens/MyProfile';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +29,7 @@ export default function TabNavigation() {
         <Tab.Screen 
         name = 'Search'
         component={Search}
-        options={{'headerShown': false, tabBarIcon: ()=> <FontAwesome name="search" size={24} color="black" />}}
+        options={{ tabBarIcon: ()=> <FontAwesome name="search" size={24} color="black" />}}
         />
         <Tab.Screen 
         name = 'Profile'
