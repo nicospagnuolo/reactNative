@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { db, auth } from '../firebase/config'
 import firebase from 'firebase';
 import { EvilIcons } from '@expo/vector-icons'; 
+import FormComents from './FormComents';
 
 export default class Post extends Component {
     constructor(props){
@@ -17,12 +18,10 @@ export default class Post extends Component {
     }
 
     componentDidMount(){
-
         let estaMiLike = this.props.data.data.likes.includes(auth.currentUser.email)
         if(estaMiLike){
             this.setState({myLike: true})
         }
-
         db.collection('users').where("owner", "==", this.props.data.data.owner).onSnapshot((docs)=>{
             let arrUsuario = []
             docs.forEach((doc) => {
@@ -96,19 +95,18 @@ export default class Post extends Component {
   render() {
     return (
       <View style = {styles.card}>
-        <TouchableOpacity onPress={()=> this.goProfile()}><Text><Image
-            source={{uri: this.state.usuario.imgProfile ? this.state.usuario.imgProfile : 'https://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg'}}
+        <TouchableOpacity onPress={()=> this.goProfile()}><Text style={styles.txt1}><Image
+            source={{uri: this.state.usuario.imgProfile}}
             style = {styles.imgP}
             resizeMode = 'contain'
             />  {this.state.usuario.owner}</Text></TouchableOpacity>
         <Image
-            source={{uri: this.props.data.data.img ? this.props.data.data.img : ''}}
+            source={{uri: this.props.data.data.img}}
             style = {styles.img}
             resizeMode = 'contain'
-
         />
         
-        <Text >{this.state.usuario.name}: {this.props.data.data.description}</Text>
+        <Text><Text style={styles.txt3}>{this.state.usuario.name}</Text>: <Text style={styles.txt}>  {this.props.data.data.description}</Text></Text>
         
         {
             this.state.myLike === false ?
@@ -126,30 +124,38 @@ export default class Post extends Component {
                 size={24}/>
             </TouchableOpacity>
         }
-        <Text >{this.state.likes}  likes</Text>
+        <Text style={styles.txt}>{this.state.likes}  likes</Text>
         <TouchableOpacity style={styles.btn} onPress={()=> this.irComentar()}>
-            <Text >View coments</Text>
+            <Text style={styles.txt}>View coments</Text>
         </TouchableOpacity>
-        <FlatList
-            data={this.props.data.data.coments.slice(-4).reverse()} // electiva de mostrar 4 comentarios
+        
+        {
+            this.props.data.data.coments.length === 0 && this.props.pofile == false?
+            <Text style={styles.txt4}>No coments</Text>
+            :
+            <FlatList
+            data={this.props.data.data.coments.slice(-4).reverse()} 
             keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <View >
-                <Text>{item.owner}:</Text>
-                <Text>{item.coment}</Text>
-              </View>
-            )}
-          />
+            renderItem={({item})=> 
+                <Text style={styles.txt}><Image
+            source={{uri: item.imgProfile}}
+            style = {styles.imgP}
+            resizeMode = 'contain'
+            /><Text style={styles.txt3}>
+            {item.owner}</Text>: {item.coment}</Text>
+        }
+        />
+        }
         {
             this.props.profile ?
             <>
             <div>----------------</div>
             <TouchableOpacity onPress={() => this.deletePost(this.props.id)} style= {styles.btn}>
-                <Text><EvilIcons name="trash" size={24} color="black" />Delete post</Text>
+                <Text style={styles.txt}><EvilIcons name="trash" size={24} color="white" />Delete post</Text>
             </TouchableOpacity>
             </>
             :
-            <></>
+            <FormComents navigation={this.props.navigation} post={this.props.data.id}/>
         }
       </View>
     )
@@ -158,14 +164,15 @@ export default class Post extends Component {
 
 const styles = StyleSheet.create({
     img: {
-        width: '100%',
-        height: 200
+        width: 300,
+        height: 300,
+        margin: 20,
     },
     card: {
         alignSelf: "baseline",
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: "#fff",
+        backgroundColor: "black",
         margin: 10,
         padding: 20,
         borderRadius: 30,
@@ -173,15 +180,33 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     btn: {
-        backgroundColor: '#4caf50',
-        color: '#fff',
+        backgroundColor: '#778899',
         padding: 10,
         border: 'none',
         borderRadius: 4
     },
     imgP: {
-        width: 40,
-        height: 40,
-        borderRadius: 20
-      }
+        width: 80,
+        height: 80,
+        borderRadius: 50
+    },
+    txt: {
+        color: 'white'
+    },
+    txt1: {
+        fontWeight: 'bold',
+        color: 'white',
+        textShadowColor: 'white',
+        fontStyle: 'italic',
+        fontSize: 15
+    },
+    txt3: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 15
+
+    },
+    txt4: {
+        color: 'red',
+    }
 })

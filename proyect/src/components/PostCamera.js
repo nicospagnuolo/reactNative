@@ -66,7 +66,7 @@ export default class PostCamera extends Component {
                 ref = {(cameraMethods)=> this.cameraMethods = cameraMethods}
             />
             <TouchableOpacity onPress={()=> this.takePicture()}>
-                <FontAwesome name="camera" size={24} color="black" />
+                <FontAwesome name="camera" size={24} color="white" />
             </TouchableOpacity>
             </>
             : this.state.permissions && this.state.showCamera === false ?
@@ -83,18 +83,18 @@ export default class PostCamera extends Component {
                     this.setState = ({
                         showCamera: true
                     })}}>
-                    <Entypo name="arrow-bold-right" size={24} color="black" />
+                    <Entypo name="arrow-bold-right" size={24} color="white" />
                 </TouchableOpacity>
                     :
                     <TouchableOpacity 
                 onPress={()=> this.acceptPhoto()} >
-                    <Entypo name="arrow-bold-right" size={24} color="black" />
+                    <Entypo name="arrow-bold-right" size={24} color="white" />
                 </TouchableOpacity>
                 }
                 
                 
                 <TouchableOpacity onPress={()=> this.deletePhoto()}>
-                    <AntDesign name="delete" size={24} color="black" />
+                    <AntDesign name="delete" size={24} color="white" />
                 </TouchableOpacity>
                 </>
             :

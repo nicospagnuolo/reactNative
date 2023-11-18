@@ -1,4 +1,4 @@
-import { Text, View, ActivityIndicator, FlatList, Image, TouchableOpacity,StyleSheet, ScrollView} from 'react-native'
+import { Text, View, ActivityIndicator, FlatList, Image, TouchableOpacity,StyleSheet, ScrollView, ImageBackground} from 'react-native'
 import React, { Component } from 'react'
 import {db, auth } from '../firebase/config'
 import Post from '../components/Post'
@@ -52,40 +52,26 @@ export default class Profile extends Component {
         this.props.navigation.navigate('login')
     }
 
-    delete(userId){
-      auth.signOut()
-      this.props.navigation.navigate('login')
-      db.collection('users')
-        .doc(userId)
-        .delete()
-    }
-
 
 
   render() {
     return (
-        this.state.hayDatos === false ?
-          <ActivityIndicator
-                    size={32}
-                    color={'blue'}
-                />
-                :
-                <>
-                
+      <ImageBackground source={require('../../assets/fondoHome.jpeg')} style={styles.backgroundImage}>
+        
                 <ScrollView >
+                <View style={styles.container}>
+                  <View style={styles.card}>
                 <Image
                   source={{uri: this.state.usuario.imgProfile ? this.state.usuario.imgProfile : 'https://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg'}}
                   style = {styles.img}
                   resizeMode = 'contain'
                 />
-                <Text>Welcome to your profile: {this.state.usuario.name}</Text>
-                <Text>Your email: {this.state.usuario.owner}</Text>
+                <Text style={styles.txt}>Welcome to your profile: {this.state.usuario.name}</Text>
+                <Text style={styles.txt}>Your email: {this.state.usuario.owner}</Text>
                 <TouchableOpacity style={styles.signoutBtn} onPress={()=> this.logout()}>
-                  <Text><SimpleLineIcons name="logout" size={24} color="black" /> Log out</Text>
+                  <Text ><SimpleLineIcons name="logout" size={24} color="black" /> Log out</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.signoutBtn} onPress={()=> this.delete(this.state.id)}>
-                  <Text><SimpleLineIcons name="logout" size={24} color="black" /> Delete</Text>
-                </TouchableOpacity>
+                </View>
                 <Text>Your posts</Text>
                 {
                   this.state.posts.length === 0 ?
@@ -105,17 +91,17 @@ export default class Profile extends Component {
                         }
                 />
                 </View>
+                </View>
                 </ScrollView>
                 
-                </>
-      
+                </ImageBackground>
     )
   }
 }
 
 const styles = StyleSheet.create({
     signoutBtn:{
-      backgroundColor: '#4caf50',
+      backgroundColor: '#808000',
         color: '#fff',
         padding: 10,
         border: 'none',
@@ -143,5 +129,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 'wrap',
     flexDirection: 'wrap'
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', 
+    justifyContent: 'center',
+  },
+  txt: {
+      color: 'white'
+  },
+  card: {
+    alignSelf: "baseline",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "black",
+        margin: 10,
+        padding: 20,
+        borderRadius: 30,
+        width: 300,
+        textAlign: "center",
   }
   })

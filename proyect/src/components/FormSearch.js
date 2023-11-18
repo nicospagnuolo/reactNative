@@ -19,10 +19,9 @@ export default class FormSearch extends Component {
   render() {
     return (
       <View>
-        <Text>FormSearch</Text>
         <TextInput
             style = {styles.input}
-            placeholder = 'Search with username'
+            placeholder = 'Search by username or owner'
             keyboardType = 'default'
             onChangeText = {(evento)=> this.guardarValor(evento)}
         />
@@ -38,10 +37,11 @@ const styles = StyleSheet.create({
   input:{
       borderWidth: 1,
       borderColor: 'green',
-      marginBottom: 24
+      marginBottom: 24,
+      color: 'white'
   },
   btn:{
-    backgroundColor: '#4caf50',
+    backgroundColor: '#808000',
     color: '#fff',
     padding: 10,
     border: 'none',

@@ -1,4 +1,4 @@
-import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import React, { Component } from 'react'
 import { auth } from '../firebase/config'
 
@@ -24,8 +24,13 @@ class FormLogin extends Component {
 
     render() {
         return (
+            <><Image
+            source={{uri: require('../../assets/AboutCode.png')}}
+            style = {styles.img}
+            resizeMode = 'contain'/>
         <View style={styles.container}>
-            <View>
+            <View >
+            <Text style={styles.title}>Login</Text>
                 <TextInput
                     style = {styles.input}
                     placeholder = 'Email'
@@ -47,7 +52,7 @@ class FormLogin extends Component {
                         <TouchableOpacity 
                     onPress={()=> this.loginUser(this.state.email, this.state.password)}                
                     style={styles.btn}>
-                        <Text style={styles.textBtn}>Login</Text>
+                        <Text >Login</Text>
                     </TouchableOpacity>
                     :
                     <Text style={styles.text}>Fill both sections</Text>
@@ -69,6 +74,7 @@ class FormLogin extends Component {
             </View>
 
         </View>
+        </>
         )
     }
 }
@@ -86,18 +92,17 @@ const styles = StyleSheet.create({
         width: 350,
         margin: 50, 
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: '#b0c4de',
+        borderRadius: 30
     },
     btn:{
-        backgroundColor: '#4caf50',
-        color: '#fff',
+        backgroundColor: '#808000',
         padding: 10,
         border: 'none',
         borderRadius: 4
     },
     btn2:{
-        backgroundColor: '#87ceeb',
-        color: '#fff',
+        backgroundColor: '#808000',
         padding: 10,
         border: 'none',
         borderRadius: 4
@@ -107,7 +112,16 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'red'
-    }
+    },
+    img: {
+    width: 140,
+    height: 140,
+    borderRadius: 90
+  },
+  title: {
+      fontWeight: 'bold',
+      fontSize: 18
+  }
 })
 
 export default FormLogin

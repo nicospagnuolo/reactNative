@@ -1,8 +1,9 @@
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native'
 import React, { Component } from 'react'
 import FormPost from '../components/FormPost'
 import { auth, db } from '../firebase/config'
 import PostCamera from '../components/PostCamera'
+import MyImagePicker from '../components/MyImagePicker'
 
 export default class NewPost extends Component {
   constructor(props){
@@ -10,7 +11,8 @@ export default class NewPost extends Component {
     this.state={
       description:'',
       urlImg: '',
-      step1: true
+      step1: true,
+      clickCamera: false
     }
   }
 
@@ -26,7 +28,7 @@ export default class NewPost extends Component {
         likes: [],
         coments: []
     })
-    .then(()=> this.props.navigation.navigate('Home'))
+    .then(()=> {this.props.navigation.navigate('Home'), this.setState({description: '', urlImg: '', step1: true, clickCamera: false, clickLibary: false})})
     .catch((e) => console.log(e))
 }
 updateDescription(text){
@@ -43,16 +45,37 @@ updateImgUrl(url){
   render() {
     return (
       <View style = {styles.container}>
-        {
-          this.state.step1 ?
-          <PostCamera updateImgUrl= {(url)=> this.updateImgUrl(url)} />
+        <ImageBackground source={require('../../assets/fondoHome.jpeg')} style={styles.backgroundImage}>
+        <TouchableOpacity style= {styles.btn2} onPress= {()=>this.setState({
+          clickCamera: true,
+          clickLibary: false
+        })}>
+          <Text >Take picture with camera</Text>
+        </TouchableOpacity>
+        <></>
+        <TouchableOpacity style= {styles.btn2} onPress= {()=> this.setState({
+          clickLibary: true,
+          clickCamera: false
+        })}>
+          <Text >Choose from libary</Text>
+        </TouchableOpacity>
 
+        {
+          this.state.step1 == true && this.state.clickCamera == true ?
+          <PostCamera updateImgUrl= {(url)=> this.updateImgUrl(url)} />
+          :
+          this.state.step1 == true && this.state.clickLibary == true ?
+          <MyImagePicker uploadStatePostImg={(url) => this.updateImgUrl(url)} post = {'1'}/>
           :
           <>
-            <FormPost 
-            updateDescription = {(description)=> this.updateDescription(description)}
-            stateDescription = {this.state.description}
+          {this.state.step1 == false && (this.state.clickCamera == true || this.state.clickLibary == true) ?
+              <FormPost 
+              updateDescription = {(description)=> this.updateDescription(description)}
+              stateDescription = {this.state.description}
           />
+          :
+          <></>}
+          
 
           {this.state.description !== '' ?
           <TouchableOpacity 
@@ -68,10 +91,14 @@ updateImgUrl(url){
             </Text>
           </TouchableOpacity>
           :
+          this.step1 == false && this.state.description == '' ?
           <Text style= {styles.text}>Fill all the sections </Text>
+          :
+          <></>
         }
           </>
         }
+        </ImageBackground>
       </View>
     )
   }
@@ -81,8 +108,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#87ceeb',
     color: '#fff',
     padding: 10,
+    margin: 10,
     border: 'none',
-    borderRadius: 4
+    borderRadius: 4,
+    width: 250
 }, 
 container: {
   flex: 1,
@@ -90,5 +119,10 @@ container: {
 },
 text: {
   color: 'red'
+},
+backgroundImage: {
+  flex: 1,
+  resizeMode: 'cover', 
+  justifyContent: 'center',
 }
 })

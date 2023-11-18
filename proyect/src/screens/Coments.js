@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {View, FlatList, Text, StyleSheet, Image } from 'react-native'
+import {View, FlatList, Text, StyleSheet, Image, ImageBackground } from 'react-native'
 import FormComents from '../components/FormComents'
 import { db } from '../firebase/config'
 import Coment from '../components/Coment'
@@ -34,6 +34,7 @@ export default class Register extends Component {
 
   render() {
     return (
+      <ImageBackground source={require('../../assets/fondoHome.jpeg')} style={styles.backgroundImage}>
       <View>
           <>
           {
@@ -51,11 +52,17 @@ export default class Register extends Component {
             <FormComents navigation={this.props.navigation} post={this.props.route.params.post}/>
           </>
         </View>
+        </ImageBackground>
     )
   }
 }
 const styles = StyleSheet.create({
   text: {
       color: 'red'
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', 
+    justifyContent: 'center',
   }
 })

@@ -14,7 +14,7 @@ class FormPost extends Component {
     render() {
         return (
         <View style={styles.container}>
-            <Text>New post</Text>
+            <Text style={styles.txt}>Coment for the post</Text>
                 <TextInput
                     style = {styles.input}
                     placeholder = 'Coment for the post'
@@ -36,12 +36,14 @@ const styles = StyleSheet.create({
         boxSizing: "border-box",
         borderWidth: 1,
         borderColor: 'grey',
+        color: 'white'
     },
     container: {
         width: 350,
         margin: 50, 
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: 'black',
+        borderRadius: 30
     },
     textBtn:{
         color:'white'
@@ -50,6 +52,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 18
     },
+    txt: {
+        color: 'white'
+    }
 })
 
 export default FormPost

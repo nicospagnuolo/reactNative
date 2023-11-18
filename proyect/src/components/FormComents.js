@@ -8,9 +8,29 @@ export default class FormComents extends Component {
     super(props)
     this.state = {
       coment: '',
+      usuario: []
 
     }
   }
+
+  componentDidMount(){
+    db.collection('users').where("owner", "==", auth.currentUser.email).onSnapshot((docs)=>{
+      let arrUsuario = []
+      docs.forEach((doc) => {
+        arrUsuario.push({
+          id:doc.id,
+          data: doc.data()
+        })
+      })
+
+      this.setState({
+        usuario : arrUsuario[0].data,
+        id: arrUsuario[0].id
+      })
+
+    })}
+
+
   addComent(coment){
     db
     .collection('posts')
@@ -19,17 +39,18 @@ export default class FormComents extends Component {
         coments: firebase.firestore.FieldValue.arrayUnion({
             owner: auth.currentUser.email,
             createdAt: Date.now(),
-            coment: coment
+            coment: coment,
+            imgProfile: this.state.usuario.imgProfile
         })
     })
-    .then()
+    .then(()=> this.setState({coment: ''}))
     .catch((e) => console.log(e))
 }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Add your coment</Text>
+        <Text style={styles.txt}>Add your coment</Text>
          <TextInput
                     style = {styles.input}
                     placeholder = 'coment'
@@ -61,11 +82,11 @@ const styles = StyleSheet.create({
   input:{
       borderWidth: 1,
       borderColor: 'green',
+      color:'white',
       marginBottom: 24
   },
   btn:{
-    backgroundColor: '#87ceeb',
-    color: '#fff',
+    backgroundColor: '#808000',
     padding: 10,
     border: 'none',
     borderRadius: 4,
@@ -78,6 +99,9 @@ const styles = StyleSheet.create({
     width: 350,
     margin: 50, 
     padding: 20,
-    backgroundColor: '#fff',
-}
+    backgroundColor: 'black',
+  },
+    txt: {
+        color: 'white'
+    }
 })

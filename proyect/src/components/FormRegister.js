@@ -1,7 +1,6 @@
-import { Text, View, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text, View, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import React, { Component } from 'react'
 import {db, auth } from '../firebase/config'
-import PostCamera from '../components/PostCamera'
 
 class FormRegister extends Component {
     constructor(props){
@@ -25,23 +24,32 @@ class FormRegister extends Component {
                 imgProfile: this.state.urlImg,
                 name: this.state.name,
             })
-            .then((resp)=>this.props.navigation.navigate('AdicionalInfo'))
+            .then((resp)=>this.props.navigation.navigate('AdicionalInfo', {docId: resp.id}))
             .catch( err =>{
                 console.log(err)
                 this.setState({
-                    error: resp.message
+                    error: err.message
                 })  
             })
         })
-        .catch((err=> console.log(err)))
+        .catch(err =>{
+            console.log(err)
+            this.setState({
+                error: err.message
+            })  
+        })
         
     }
 
 
     render() {
         return (
+            <><Image
+            source={{uri: require('../../assets/AboutCode.png')}}
+            style = {styles.img}
+            resizeMode = 'contain'/>
             <View style={styles.container}>
-                <Text style={styles.title}>Register on About Code</Text>
+                <Text style={styles.title}>Register</Text>
                 <TextInput
                     style = {styles.input}
                     placeholder = 'Name'
@@ -66,8 +74,6 @@ class FormRegister extends Component {
                     secureTextEntry={true}
                     onChangeText = { (text) => this.setState({password: text}) }
                 />
-                
-
 
                 {
                     this.state.name !== '' && this.state.email !== '' && this.state.password !== '' ?
@@ -75,7 +81,7 @@ class FormRegister extends Component {
                         <TouchableOpacity 
                             onPress={()=> this.registrarUsuario(this.state.name, this.state.email, this.state.password)}                
                             style={styles.btn}>
-                        <Text style={styles.textBtn}>Register</Text>
+                        <Text >Register</Text>
                          </TouchableOpacity>
                     </>
                     :
@@ -96,6 +102,7 @@ class FormRegister extends Component {
                     <Text>Login here!</Text>
                 </TouchableOpacity>
             </View>
+            </>
         )
     }
 }
@@ -113,25 +120,23 @@ const styles = StyleSheet.create({
     },
     container: {
         width: 350,
-        flex:1,
         margin: 50, 
         padding: 20,
-        backgroundColor: '#fff',
+        backgroundColor: '#b0c4de',
+        borderRadius: 30
     },
     title: {
         fontWeight: 'bold',
         fontSize: 18
     },
     btn:{
-        backgroundColor: '#4caf50',
-        color: '#fff',
+        backgroundColor: '#808000',
         padding: 10,
         border: 'none',
-        borderRadius: 4
+        borderRadius: 4,
     },
     btn2:{
-        backgroundColor: '#87ceeb',
-        color: '#fff',
+        backgroundColor: '#808000',
         padding: 10,
         border: 'none',
         borderRadius: 4
@@ -141,7 +146,12 @@ const styles = StyleSheet.create({
     },
     text: {
         color: 'red'
-    }
+    },
+    img: {
+    width: 140,
+    height: 140,
+    borderRadius: 90
+  }
 })
 
 export default FormRegister

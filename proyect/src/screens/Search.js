@@ -1,4 +1,4 @@
-import { Text, TextInput, View, TouchableOpacity, StyleSheet, FlatList } from 'react-native'
+import { Text, TextInput, View, TouchableOpacity, StyleSheet, FlatList, ImageBackground } from 'react-native'
 import React, { Component } from 'react'
 import {db} from '../firebase/config'
 import User from '../components/User'
@@ -49,19 +49,25 @@ export default class Search extends Component {
   
   render() {
     return (
+      <ImageBackground source={require('../../assets/fondoHome.jpeg')} style={styles.backgroundImage}>
           <>
           <FormSearch filterMovies={(name) => this.filterUsers(name)} uploadInput={(valor)=> this.uploadInput(valor)}/>
-          {
-            this.state.valorInput == '' ?
-            <Text>Search with username or owner</Text>
-            :
             <FlatList
                     data={this.state.searchData}
                     keyExtractor={(item)=> item.id.toString()}
                     renderItem={({item})=> <User data={item} id={item.id} />}
-                />
-          }              
+                />            
           </>
+          </ImageBackground>
     )
   }
 }
+const styles = StyleSheet.create({
+  
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', 
+    justifyContent: 'center',
+  }
+})
+

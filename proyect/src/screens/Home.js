@@ -1,4 +1,4 @@
-import { View, StyleSheet, ActivityIndicator, FlatList, Text} from 'react-native'
+import { View, StyleSheet, ActivityIndicator, FlatList, Text, ImageBackground} from 'react-native'
 import React, { Component } from 'react'
 import {db} from '../firebase/config'
 import Post from '../components/Post'
@@ -37,6 +37,7 @@ class Home extends Component {
 
     render() {
     return (
+        <ImageBackground source={require('../../assets/fondoHome.jpeg')} style={styles.backgroundImage}>
         <View style={styles.containerGral}>
             {
                 this.state.hayDatos === false  ?
@@ -53,8 +54,8 @@ class Home extends Component {
                     />
                     </>
             }
-            
         </View>
+        </ImageBackground>
                 
         )
     }
@@ -67,19 +68,11 @@ const styles = StyleSheet.create(
             justifyContent: 'center',
             alignItems: 'center'
         },
-        container : {
-            flex : 2,
-            alignContent:'centrer'
-    
-        },
-        containerGrande:{
-            flex:3,
-            backgroundColor:'blue'
-        },
-        containerChico:{
-            flex:1,
-            backgroundColor:'orange'
-        }
+        backgroundImage: {
+            flex: 1,
+            resizeMode: 'cover', 
+            justifyContent: 'center',
+          }
     }
 ) 
 export default Home
