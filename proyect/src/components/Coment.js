@@ -25,13 +25,12 @@ export default class Coment extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: "baseline",
+    alignSelf: "center",
     justifyContent: "space-between",
     flexDirection: 'row',
     backgroundColor: "black",
     margin: 10,
     padding: 20,
-    width:200,
     borderRadius: 30,
     textAlign: "center",
 

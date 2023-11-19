@@ -130,7 +130,7 @@ export default class Post extends Component {
         </TouchableOpacity>
         
         {
-            this.props.data.data.coments.length === 0 && this.props.pofile == false?
+            this.props.data.data.coments.length === 0 ?
             <Text style={styles.txt4}>No coments</Text>
             :
             <FlatList

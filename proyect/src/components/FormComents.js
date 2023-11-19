@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
     margin: 50, 
     padding: 20,
     backgroundColor: 'black',
+    borderRadius: 20
   },
     txt: {
         color: 'white'

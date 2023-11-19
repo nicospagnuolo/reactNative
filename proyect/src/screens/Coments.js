@@ -35,7 +35,7 @@ export default class Register extends Component {
   render() {
     return (
       <ImageBackground source={require('../../assets/fondoHome.jpeg')} style={styles.backgroundImage}>
-      <View>
+      <View style={styles.container}>
           <>
           {
             this.state.coments.length === 0 ?
@@ -46,7 +46,14 @@ export default class Register extends Component {
             <FlatList
                 data={this.state.coments}
                 keyExtractor={(item)=> item.createdAt.toString()}
-                renderItem={({item})=> <Coment navigation = {this.props.navigation} data={item} id={item.createdAt} />}
+                renderItem={({item})=> <View style={styles.container2}>
+                <Text style={styles.txt}><Image
+            source={{uri: item.imgProfile}}
+            style = {styles.imgP}
+            resizeMode = 'contain'
+            /><Text style={styles.txt3}>
+            {item.owner}</Text>: {item.coment}</Text></View>
+        }
                 />
             
             <FormComents navigation={this.props.navigation} post={this.props.route.params.post}/>
@@ -64,5 +71,29 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover', 
     justifyContent: 'center',
+  },
+  container: {
+    flex:1,
+    alignItems: 'center',
+  },
+  container2: {
+    backgroundColor: 'black',
+    width: 600,
+    margin: 20,
+    padding: 20,
+    borderRadius: 20
+  },
+  txt: {
+    color: 'white',
+  }, 
+  txt3: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 15
+  },
+  imgP: {
+      width: 80,
+      height: 80,
+      borderRadius: 50
   }
 })
